@@ -3,6 +3,7 @@ package servercalculat
 import (
 	"fmt"
 	"math"
+	"net/http"
 	"sort"
 	"store/core"
 	"store/initstore"
@@ -44,6 +45,8 @@ type SortStructArray []*SortStruct
 type SortStruct struct {
 	Code  string
 	Score float64
+	Day   string
+	Min   string
 }
 
 type CalculatClass struct {
@@ -87,6 +90,8 @@ func (c *CalculatServer) UpdateSort(code string, score float64) {
 	s := new(SortStruct)
 	s.Code = code
 	s.Score = Simulink(c.core.MapCorData[code].Score + score)
+	s.Day = "http://image.sinajs.cn/newchart/daily/n/" + code + ".gif"
+	s.Min = "http://image.sinajs.cn/newchart/min/n/" + code + ".gif"
 	c.sortArray = append(c.sortArray, s)
 
 	return
@@ -178,7 +183,9 @@ func (c *CalculatServer) HttpServerHanlde(cont *gin.Context) {
 
 	switch nType {
 	case TYPE_STORE:
-		cont.JSON(200, c.sortArray)
+		cont.HTML(http.StatusOK, "calculate.tmpl", gin.H{
+			"SortArray": c.sortArray,
+		})
 		break
 	case TYPE_CLASS:
 		for _, m := range c.mapCalculatClass {

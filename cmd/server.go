@@ -15,7 +15,7 @@ type StoreServer struct {
 
 func (s *StoreServer) OnStart() {
 
-	if _, err := log.NewLog("/log/store", "store", 0); err != nil {
+	if _, err := log.NewLog("D://log", "store", 0); err != nil {
 		fmt.Println("failed to initLog, err %s:", err.Error())
 		return
 	}

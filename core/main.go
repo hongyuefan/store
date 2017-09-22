@@ -19,7 +19,7 @@ type Core struct {
 
 func NewCore() *Core {
 	c := new(Core)
-	c.Cont = context.NewContext(1, 5, 20, "8000", "root:350999@tcp(localhost:3306)/store?charset=utf8")
+	c.Cont = context.NewContext(1, 5, 20, "8000", "root:350999@tcp(47.92.67.93:3306)/store?charset=utf8")
 	c.MapCorData = make(map[string]*CoreData, 0)
 	c.MapClass = make(map[uint32]string, 0)
 	c.CodeArray = make([]string, 0)

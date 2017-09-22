@@ -51,6 +51,8 @@ func RunServers(coreData *core.Core) {
 
 	router := gin.Default()
 
+	router.LoadHTMLGlob("templates/*")
+
 	for _, s := range appArray {
 
 		if s.need != nil {

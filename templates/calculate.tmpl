@@ -1,0 +1,16 @@
+<html>
+<head>
+<body>
+<table border="Score">
+	{{range $k,$v := .SortArray}}	
+	<tr>
+			<th>{{$v.Code}}</th>
+			<th>{{$v.Score}}</th>
+			<th><img src="{{$v.Day}}"/></th>
+			<th><img src="{{$v.Min}}"/></th>
+	</tr>
+	{{end}}
+</table>
+</body>
+</head>
+</html>
