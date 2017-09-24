@@ -43,10 +43,12 @@ type Calculat_Store struct {
 type SortStructArray []*SortStruct
 
 type SortStruct struct {
-	Code  string
-	Score float64
-	Day   string
-	Min   string
+	Code       string
+	Score      float64
+	Day        string
+	Min        string
+	ClassScore float64
+	ClassName  string
 }
 
 type CalculatClass struct {
@@ -77,12 +79,13 @@ func (c *CalculatServer) GetClassScore(code uint32) float64 {
 	}
 	return 0
 }
-func (c *CalculatServer) UpdateSort(code string, score float64) {
+func (c *CalculatServer) UpdateSort(code string, score, classcore float64) {
 
 	for _, s := range c.sortArray {
 		if s.Code == code {
 			s.Score += score
 			s.Score = Simulink(s.Score)
+			s.ClassScore = classcore
 			return
 		}
 	}
@@ -92,6 +95,8 @@ func (c *CalculatServer) UpdateSort(code string, score float64) {
 	s.Score = Simulink(c.core.MapCorData[code].Score + score)
 	s.Day = "http://image.sinajs.cn/newchart/daily/n/" + code + ".gif"
 	s.Min = "http://image.sinajs.cn/newchart/min/n/" + code + ".gif"
+	s.ClassName = c.core.GetClassByCode(code)
+
 	c.sortArray = append(c.sortArray, s)
 
 	return
@@ -172,11 +177,6 @@ const (
 
 func (c *CalculatServer) HttpServerHanlde(cont *gin.Context) {
 
-	//code := cont.Query("code")
-
-	//	for _, m := range c.mapCalculatClass {
-	//		cont.JSON(200, m)
-	//	}
 	sType := cont.Query("type")
 
 	nType, _ := strconv.Atoi(sType)
@@ -270,7 +270,7 @@ func (c *CalculatServer) calculateOneCode(o *core.CoreData) {
 
 	score := c.GetClassScore(o.ClassId)*Weight_Class + calculatStore.calCulat.Weibi*Weight_WeiBi + calculatStore.calCulat.RateUping*Weight_RateUping + calculatStore.calCulat.RateUp*Weight_RateUp
 
-	c.UpdateSort(o.Code, Simulink(score))
+	c.UpdateSort(o.Code, Simulink(score), c.GetClassScore(o.ClassId))
 
 	log.GetLog().LogDebug("code:", o.Code, "weibi:", calculatStore.calCulat.Weibi, "RateUp:", calculatStore.calCulat.RateUp, "RateUping:", calculatStore.calCulat.RateUping, "Score:", score, "Score:", Simulink(score))
 

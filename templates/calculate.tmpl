@@ -4,8 +4,9 @@
 <table border="Score">
 	{{range $k,$v := .SortArray}}	
 	<tr>
+			<th>{{$k}}</th>
 			<th>{{$v.Code}}</th>
-			<th>{{$v.Score}}</th>
+			<th><p>{{$v.Score}}</p><p>{{$v.ClassName}}</p><p>{{$v.ClassScore}}</p></th>
 			<th><img src="{{$v.Day}}"/></th>
 			<th><img src="{{$v.Min}}"/></th>
 	</tr>

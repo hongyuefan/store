@@ -128,6 +128,15 @@ func (c *Core) GetClassbyId(id uint32) (class string) {
 	return
 }
 
+func (c *Core) GetClassByCode(code string) (class string) {
+	c.lock_class.RLock()
+	defer c.lock_class.RUnlock()
+
+	core := c.GetCoreDatabyCode(code)
+
+	return c.GetClassbyId(core.ClassId)
+}
+
 func (c *Core) InsertClass(id uint32, class string) {
 	c.lock_class.Lock()
 	defer c.lock_class.Unlock()
