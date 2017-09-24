@@ -132,9 +132,9 @@ func (c *Core) GetClassByCode(code string) (class string) {
 	c.lock_class.RLock()
 	defer c.lock_class.RUnlock()
 
-	core := c.GetCoreDatabyCode(code)
+	core := c.MapCorData[code]
 
-	return c.GetClassbyId(core.ClassId)
+	return c.MapClass[core.ClassId]
 }
 
 func (c *Core) InsertClass(id uint32, class string) {

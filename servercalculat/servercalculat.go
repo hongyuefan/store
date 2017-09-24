@@ -22,7 +22,7 @@ const (
 	//Weight_RateSellNum = 0.125
 	//Weight_RatBuyNum   = 0.125
 	Weight_RateUping = 0.3
-	Weight_RateUp    = 0.1
+	//Weight_RateUp    = 0.1
 )
 
 type CalculatServer struct {
@@ -268,9 +268,11 @@ func (c *CalculatServer) calculateOneCode(o *core.CoreData) {
 
 	c.UpdateCalculatClass(o.ClassId, c.core.GetClassbyId(o.ClassId), calculatStore.calCulat.RateUping)
 
-	score := c.GetClassScore(o.ClassId)*Weight_Class + calculatStore.calCulat.Weibi*Weight_WeiBi + calculatStore.calCulat.RateUping*Weight_RateUping + calculatStore.calCulat.RateUp*Weight_RateUp
+	clasScore := c.GetClassScore(o.ClassId)
 
-	c.UpdateSort(o.Code, Simulink(score), c.GetClassScore(o.ClassId))
+	score := clasScore*Weight_Class + calculatStore.calCulat.Weibi*Weight_WeiBi + calculatStore.calCulat.RateUping*Weight_RateUping
+
+	c.UpdateSort(o.Code, Simulink(score), clasScore)
 
 	log.GetLog().LogDebug("code:", o.Code, "weibi:", calculatStore.calCulat.Weibi, "RateUp:", calculatStore.calCulat.RateUp, "RateUping:", calculatStore.calCulat.RateUping, "Score:", score, "Score:", Simulink(score))
 
